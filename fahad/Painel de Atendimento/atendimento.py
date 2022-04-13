@@ -14,7 +14,7 @@ def menu():
     "\n4 - Sair"
     )
     global opt
-    opt = int(input())
+    opt = int(input("Digite a opção desejada: "))
     Opcao()
   
 
