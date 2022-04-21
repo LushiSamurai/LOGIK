@@ -26,39 +26,47 @@ class LDE:
         novo.proximo = self.trailer   # novo -> trailer
         self.trailer.anterior = novo  # novo <- trailer
       
-    def inserir_inicio(self, novo):
+    def inserirInicio(self, novo):
         self.tam += 1
         if self.is_empty():
             self.__inserir(novo)
         else:
            pass
 
-    def inserir_fim(self, novo):
+    def inserirFim(self, novo):
         self.tam += 1
         if self.is_empty():
             self.__inserir(novo)
         else:
             pass
     
-    def remover_inicio(self):
+    def removerInicio(self):
         if self.is_empty():
             print('Lista Vazia!')
             return
         else:
             # lista possui + de 1 item            
             removido = self.header.proximo
-            # restante do codigo aqui...
+            self.header.proximo = removido.proximo
+            removido.proximo.anterior = self.header
+            removido.anterior = None
+            removido.proximo = None
             
         self.tam -= 1            
         return removido
         
-    def remover_fim(self):
+    def removerFim(self):
         if self.is_empty():
             print('Lista Vazia!')
             return
         
         else:
             # refazer os apontamentos
+            removido = self.trailer.anterior
+            self.trailer.anterior = removido.anterior
+            removido.anterior.proximo = self.trailer
+            removido.anterior = None
+            removido.proximo = None
             pass
 
         self.tam -= 1
@@ -80,13 +88,32 @@ class LDE:
                 print(item)
                 item = item.anterior
     
-    def buscar(self, alvo): # retorna a 1a ocorrencia
+    def buscar(self, alvo):# retorna a 1a ocorrencia
+        if self.is_empty():
+            print('Lista Vazia')
+            return
+        else:
+            item = self.header.proximo
+            while (item.dado != alvo):
+                if (item.proximo is None):
+                    return None
+                item = item.proximo
+            return item
         pass
 
     def get(self, indice):
+        if indice < 0 or indice >= self.tam:
+            contador = 0
+            item = self.header.proximo
+            while item.proximo is not None:
+                if contador == indice:
+                    return item.dado
+                contador += 1
+        else:
+            raise Exception('Indice fora do intervalo')
         pass
 
-    def remover_antes(self, alvo):
+    def removerAntes(self, alvo):
         # header <-> [] <-> [] <-> trailer
         
         nodo_atual = self.buscar(alvo)
@@ -102,13 +129,13 @@ class LDE:
             
         self.tam -= 1
         
-    def remover_apos(self, alvo):
+    def removerApos(self, alvo):
         pass    
 
     def substituir(self, alvo, valor):
         pass
 
-    def buscar_todos(self, alvo): # retorna uma list com resultados
+    def buscarTodos(self, alvo): # retorna uma list com resultados
         lista_todos = []
         ##
         ## sua logica aqui
@@ -131,11 +158,11 @@ class LDE:
 ## TESTES ##
 
 lista = LDE()
-lista.inserir_inicio(Dnodo('abc'))
-lista.inserir_inicio(Dnodo('001'))
-lista.inserir_inicio(Dnodo('xyz'))
-lista.remover_inicio()
-lista.remover_inicio()
-lista.remover_inicio()
-lista.remover_inicio()
+lista.inserirInicio(Dnodo('abc'))
+lista.inserirInicio(Dnodo('001'))
+lista.inserirInicio(Dnodo('xyz'))
+lista.removerInicio()
+lista.removerInicio()
+lista.removerInicio()
+lista.removerInicio()
 lista.imprimir()
